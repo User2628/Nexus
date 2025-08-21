@@ -1,0 +1,64 @@
+Nexus 0.0 User Guide
+
+Welcome to Nexus!
+Team Nexus Presents: a simple, OS-like command interface with math and variable functionality. Type 'h' or 'help' in the shell to view the help menu at any time.
+
+Getting Started
+
+Run the program:
+python nexus.py
+
+You will see the welcome message:
+Welcome to Nexus! Type 'h' or 'help' to access the help menu.
+
+Enter commands at the Nexus> prompt.
+
+Core Commands
+
+exit or e - Ends the current Nexus session
+uid - Displays your session's unique ID (persistent for the session)
+time - Displays the current system time (HH:MM:SS)
+ver - Displays the current Nexus version (0.0)
+
+Math Commands
+
+All math commands store the result in [ans], which can be reused in subsequent calculations:
+
+add [a] [b] - Adds two numbers
+sub [a] [b] - Subtracts second number from first
+mul [a] [b] - Multiplies two numbers
+div [a] [b] - Divides first number by second (division by zero not allowed)
+
+Notes:
+
+Arguments must be in [ ], e.g., [5].
+
+[ans] can be used as an argument to reuse the previous answer. Example:
+add [3] [4] → [ans] = 7
+mul [2] [ans] → [ans] = 14
+
+Variable Commands
+
+Nexus supports 26 single-letter variables (a–z). All unset variables default to 0.0.
+
+addvar [var] [value] - Sets a variable [a]–[z] to a value
+listvar - Lists all variables and their current values (0.0 if unset)
+resetvar - Clears all variables or only specified ones: resetvar [a]
+
+Example:
+addvar [x] [10] → sets [x] = 10
+add [5] [x] → result = 15 stored in [ans]
+resetvar [x] → clears [x], all others remain
+listvar → shows [x] = 0.0, others as set or 0.0
+
+Tips
+
+Every number or variable reference must be enclosed in [ ].
+
+[ans] allows chaining calculations efficiently.
+
+Use 'e' as a quick exit shortcut.
+
+listvar always displays all variables a–z, even if unset.
+
+This concludes the Nexus 0.0 Guide — a foundation for math operations, variables, and basic OS-like commands.
