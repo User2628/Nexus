@@ -1,0 +1,186 @@
+# Team Nexus Presents
+
+import random
+import string
+from datetime import datetime
+
+# Current Nexus version
+NEXUS_VERSION = "0.0"
+
+# Persistent session UID
+def generate_session_uid():
+    chars = string.ascii_uppercase + string.digits
+    random_part = ''.join(random.choice(chars) for _ in range(5))
+    return "I" + random_part
+
+session_uid = generate_session_uid()
+
+# Store last answer
+ans = 0
+
+# Variables a-z
+variables = {}
+
+# Parse [number] or [ans] or variable
+def parse_number(arg):
+    global ans
+    if arg.startswith("[") and arg.endswith("]"):
+        content = arg[1:-1]
+        if content.lower() == "ans":
+            return ans
+        elif content in variables:
+            return variables[content]
+        try:
+            return float(content)
+        except ValueError:
+            print(f"Invalid number or variable: {arg}")
+            return None
+    else:
+        print(f"Argument must be in [ ]: {arg}")
+        return None
+
+# Commands
+def help_command(args):
+    print("Nexus Help Menu:")
+    print("  exit       - Ends the current session")
+    print("  uid        - Displays this session's ID")
+    print("  time       - Displays the current time")
+    print("  ver        - Displays the current version")
+    print("  add [a] [b] - Adds two numbers (stores result in [ans])")
+    print("  sub [a] [b] - Subtracts second from first (stores result in [ans])")
+    print("  mul [a] [b] - Multiplies two numbers (stores result in [ans])")
+    print("  div [a] [b] - Divides first by second (stores result in [ans])")
+    print("  addvar [var] [value] - Sets variable a-z")
+    print("  listvar    - Lists all variables")
+    print("  resetvar   - Clears all or specified variables")
+
+def uid_command(args):
+    print(f"Your session UID: {session_uid}")
+
+def time_command(args):
+    current_time = datetime.now().strftime("%H:%M:%S")
+    print(f"Current time: {current_time}")
+
+def ver_command(args):
+    print(f"Nexus version: {NEXUS_VERSION}")
+
+def add_command(args):
+    global ans
+    if len(args) != 2:
+        print("Usage: add [a] [b]")
+        return
+    a = parse_number(args[0])
+    b = parse_number(args[1])
+    if a is not None and b is not None:
+        ans = a + b
+        print(ans)
+
+def sub_command(args):
+    global ans
+    if len(args) != 2:
+        print("Usage: sub [a] [b]")
+        return
+    a = parse_number(args[0])
+    b = parse_number(args[1])
+    if a is not None and b is not None:
+        ans = a - b
+        print(ans)
+
+def mul_command(args):
+    global ans
+    if len(args) != 2:
+        print("Usage: mul [a] [b]")
+        return
+    a = parse_number(args[0])
+    b = parse_number(args[1])
+    if a is not None and b is not None:
+        ans = a * b
+        print(ans)
+
+def div_command(args):
+    global ans
+    if len(args) != 2:
+        print("Usage: div [a] [b]")
+        return
+    a = parse_number(args[0])
+    b = parse_number(args[1])
+    if a is not None and b is not None:
+        if b == 0:
+            print("Error: Division by zero")
+        else:
+            ans = a / b
+            print(ans)
+
+# Variable commands
+def addvar_command(args):
+    if len(args) != 2:
+        print("Usage: addvar [var] [value]")
+        return
+    var_name = args[0][1:-1]
+    if len(var_name) != 1 or not var_name.isalpha():
+        print("Variable must be a single letter a-z")
+        return
+    value = parse_number(args[1])
+    if value is not None:
+        variables[var_name] = value
+        print(f"[{var_name}] = {value}")
+
+def listvar_command(args):
+    for c in "abcdefghijklmnopqrstuvwxyz":
+        value = variables.get(c, 0.0)
+        print(f"[{c}] = {value}")
+
+def resetvar_command(args):
+    if not args:
+        variables.clear()
+        print("All variables cleared.")
+    else:
+        for arg in args:
+            var_name = arg[1:-1]
+            if var_name in variables:
+                del variables[var_name]
+                print(f"[{var_name}] cleared.")
+            else:
+                print(f"[{var_name}] not set.")
+
+# Command registry
+commands = {
+    "h": help_command,
+    "help": help_command,
+    "uid": uid_command,
+    "time": time_command,
+    "ver": ver_command,
+    "add": add_command,
+    "sub": sub_command,
+    "mul": mul_command,
+    "div": div_command,
+    "addvar": addvar_command,
+    "listvar": listvar_command,
+    "resetvar": resetvar_command
+}
+
+def nexus_shell():
+    print("Welcome to Nexus!  Type 'h' or 'help' to access the help menu.")
+    while True:
+        try:
+            user_input = input("Nexus> ").strip()
+            if not user_input:
+                continue
+            parts = user_input.split()
+            cmd = parts[0]
+            args = parts[1:]
+            # Hidden shortcut 'e' for exit
+            if cmd == "exit" or cmd == "e":
+                print("Exiting Nexus...")
+                break
+            elif cmd in commands:
+                commands[cmd](args)
+            else:
+                print(f"Unknown command: {cmd}")
+        except KeyboardInterrupt:
+            print("\nUse 'exit' to leave Nexus.")
+        except Exception as e:
+            print(f"Error: {e}")
+
+if __name__ == "__main__":
+    nexus_shell()
