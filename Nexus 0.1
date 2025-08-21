@@ -5,7 +5,7 @@ import string
 from datetime import datetime
 
 # Current Nexus version
-NEXUS_VERSION = "0.0"
+NEXUS_VERSION = "0.1"
 
 # Persistent session UID
 def generate_session_uid():
@@ -53,6 +53,7 @@ def help_command(args):
     print("  addvar     - Sets variable a-z")
     print("  listvar    - Lists all variables")
     print("  resetvar   - Clears all or specified variables")
+    print("  echo       - Prints text multiple times")
 
 def uid_command(args):
     print(f"Your session UID: {session_uid}")
@@ -143,6 +144,21 @@ def resetvar_command(args):
             else:
                 print(f"[{var_name}] not set.")
 
+def echo_command(args):
+    if len(args) < 2:
+        print("Usage: echo text [number]")
+        return
+    text = " ".join(args[:-1])
+    count = parse_number(args[-1])
+    if count is None:
+        return
+    try:
+        count_int = int(count)
+        for _ in range(count_int):
+            print(text)
+    except ValueError:
+        print(f"Invalid repeat count: {args[-1]}")
+
 # Command registry
 commands = {
     "h": help_command,
@@ -156,7 +172,8 @@ commands = {
     "div": div_command,
     "addvar": addvar_command,
     "listvar": listvar_command,
-    "resetvar": resetvar_command
+    "resetvar": resetvar_command,
+    "echo": echo_command
 }
 
 def nexus_shell():
