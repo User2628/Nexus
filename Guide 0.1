@@ -1,7 +1,7 @@
-Nexus 0.0 User Guide
+Nexus 0.1 User Guide
 
 Welcome to Nexus!
-Team Nexus Presents: a simple, OS-like command interface with math and variable functionality. Type 'h' or 'help' in the shell to view the help menu at any time.
+Team Nexus Presents: a simple, OS-like command interface with math, variable, and text output functionality. Type 'h' or 'help' in the shell to view the help menu at any time.
 
 Getting Started
 
@@ -18,7 +18,7 @@ Core Commands
 exit or e - Ends the current Nexus session
 uid - Displays your session's unique ID (persistent for the session)
 time - Displays the current system time (HH:MM:SS)
-ver - Displays the current Nexus version (0.0)
+ver - Displays the current Nexus version (0.1)
 
 Math Commands
 
@@ -51,6 +51,20 @@ add [5] [x] → result = 15 stored in [ans]
 resetvar [x] → clears [x], all others remain
 listvar → shows [x] = 0.0, others as set or 0.0
 
+Text Output Command
+
+echo text [number] - Prints the specified text the number of times indicated in [number]
+
+Notes:
+
+Text can be any string, and [number] must be in [ ] brackets.
+
+[ans] and variables can be used in [number] to control repetition.
+
+Example:
+echo Hello [3] → prints "Hello" three times
+echo Answer is [ans] [1] → prints the last answer once
+
 Tips
 
 Every number or variable reference must be enclosed in [ ].
@@ -61,4 +75,4 @@ Use 'e' as a quick exit shortcut.
 
 listvar always displays all variables a–z, even if unset.
 
-This concludes the Nexus 0.0 Guide — a foundation for math operations, variables, and basic OS-like commands.
+This concludes the Nexus 0.1 Guide — a foundation for math operations, variables, text output, and basic OS-like commands.
